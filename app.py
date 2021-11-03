@@ -55,7 +55,7 @@ def get_database_connection():
 cursor, db = get_database_connection()
 # to be commented
 
-cursor.execute('''CREATE TABLE users (track_id varchar(255),
+cursor.execute('''CREATE TABLE users (track_id varchar(255) PRIMARY KEY,
                     full_name varchar(255),
                     age int,
                     phone varchar(255),
@@ -69,7 +69,7 @@ cursor.execute('''CREATE TABLE users (track_id varchar(255),
                     reg_date date,
                     gender varchar(255)''')
 
-cursor.execute('''CREATE TABLE admin (username varchar(255),
+cursor.execute('''CREATE TABLE admin (username varchar(255) PRIMARY KEY,
                     password varchar(255)
                     ''')
 un='Admin'
