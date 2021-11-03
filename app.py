@@ -52,6 +52,7 @@ def get_database_connection():
     return cursor, db
 
 
+cursor, db = get_database_connection()
 # to be commented
 
 cursor.execute('''CREATE TABLE users (track_id varchar(255),
@@ -87,8 +88,6 @@ if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
 if 'login' not in st.session_state:
     st.session_state.login = False
-
-cursor, db = get_database_connection()
 
 mp = {
     0: "Tracking ID",
