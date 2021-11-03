@@ -41,7 +41,6 @@ with open('credintials.yml', 'r') as f:
     system_pass = credintials['system_pass']['admin']
     # email_sender = credintials['email_sender']
 
-
 def get_database_connection():
     db = mysql.connect(host = db_credintials['host'],
                       user = db_credintials['user'],
@@ -51,6 +50,38 @@ def get_database_connection():
     cursor = db.cursor()
 
     return cursor, db
+
+
+# to be commented
+
+cursor.execute('''CREATE TABLE users (track_id varchar(255),
+                    full_name varchar(255),
+                    age int,
+                    phone varchar(255),
+                    email varchar(255),
+                    city varchar(255),
+                    address varchar(255),
+                    hours_per_week int,
+                    cur_status varchar(255),
+                    gpa float,
+                    pwd varchar(255),
+                    reg_date date,
+                    gender varchar(255)''')
+
+cursor.execute('''CREATE TABLE admin (username varchar(255),
+                    password varchar(255)
+                    ''')
+un='Admin'
+pw='1234'
+query = f'''INSERT INTO admin (username,password)
+                            VALUES ('{un}','{pw}')'''
+cursor.execute(query)
+db.commit()
+
+# to be commented end
+
+
+
 
 if 'authenticated' not in st.session_state:
     st.session_state.authenticated = False
@@ -76,7 +107,7 @@ mp = {
 }
 def view(var):
     cursor.execute(
-            f"select * from db_bootcamp.users")
+            f"select * from users")
     tables = cursor.fetchall()
     for i in tables:
         if i[8]==var:
@@ -90,7 +121,7 @@ def view(var):
 
 def pending():
     cursor.execute(
-            f"select * from db_bootcamp.users")
+            f"select * from users")
     tables = cursor.fetchall()
     for i in tables:
         if i[8]=='In queue':
@@ -111,11 +142,11 @@ def pending():
                     if accept:
                         st.balloons()
                         st.success('Accepted')
-                        cursor.execute(f"Update db_bootcamp.users set cur_status='Accepted' where track_id='{i[0]}'")
+                        cursor.execute(f"Update users set cur_status='Accepted' where track_id='{i[0]}'")
                         db.commit()
                     if reject:
                         st.warning('Rejected')
-                        cursor.execute(f"Update db_bootcamp.users set cur_status='Rejected' where track_id='{i[0]}'")
+                        cursor.execute(f"Update users set cur_status='Rejected' where track_id='{i[0]}'")
                         db.commit()
                     
     
@@ -129,7 +160,7 @@ def disp():
         date1 = col0[0].date_input("Start Date:")
         date2 = col0[1].date_input("End Date:")
         cursor.execute(
-            f"select * from db_bootcamp.users where reg_date between '{date1}' and '{date2}'")
+            f"select * from users where reg_date between '{date1}' and '{date2}'")
         tables = cursor.fetchall()
         for i in tables:
             with st.expander(i[1]):
@@ -149,11 +180,11 @@ def disp():
                     if accept:
                         st.balloons()
                         st.success('Accepted')
-                        cursor.execute(f"Update db_bootcamp.users set cur_status='Accepted' where track_id='{i[0]}'")
+                        cursor.execute(f"Update users set cur_status='Accepted' where track_id='{i[0]}'")
                         db.commit()
                     if reject:
                         st.warning('Rejected')
-                        cursor.execute(f"Update db_bootcamp.users set cur_status='Rejected' where track_id='{i[0]}'")
+                        cursor.execute(f"Update users set cur_status='Rejected' where track_id='{i[0]}'")
                         db.commit()
     elif selection=='View Pendings':
         pending()
@@ -170,7 +201,7 @@ def login():
     st.session_state.login = st.sidebar.checkbox('Sign In')
     if st.session_state.login:
         cursor.execute(
-            f"select * from db_bootcamp.admin where username='Admin'")
+            f"select * from admin where username='Admin'")
         tables = cursor.fetchall()
         if username == tables[0][0] and password == tables[0][1]:
             st.session_state.login = True
@@ -200,7 +231,7 @@ def apply():
         gpa = st.text_input("Enter your GPA :", "4.00")
         reg_date = datetime.date.today()
         if st.form_submit_button('Submit'):
-            query = f'''INSERT INTO db_bootcamp.users (track_id,full_name,age,phone,email,city,address,hours_per_week,cur_status,gpa,pwd,reg_date,gender)
+            query = f'''INSERT INTO users (track_id,full_name,age,phone,email,city,address,hours_per_week,cur_status,gpa,pwd,reg_date,gender)
                             VALUES ('{track_id}','{full_name}','{age}','{phone}','{email}','{city}','{address}','{hours_per_week}','{cur_status}','{gpa}','{pwd}','{reg_date}','{gender}')'''
             cursor.execute(query)
             db.commit()
@@ -216,7 +247,7 @@ def check_stat():
     Submit = st.button(label='Check Status')
     if Submit:
         cursor.execute(
-            f"select * from db_bootcamp.users where track_id='{track_id}' and pwd='{pwd}'")
+            f"select * from users where track_id='{track_id}' and pwd='{pwd}'")
         tables = cursor.fetchall()
         if len(tables) == 0:
             st.warning("Wrong Credintials. Try Again")
