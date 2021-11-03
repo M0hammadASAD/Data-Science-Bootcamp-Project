@@ -55,29 +55,29 @@ def get_database_connection():
 cursor, db = get_database_connection()
 # to be commented
 
-cursor.execute('''CREATE TABLE users (track_id varchar(255) PRIMARY KEY,
-                    full_name varchar(255),
-                    age int,
-                    phone varchar(255),
-                    email varchar(255),
-                    city varchar(255),
-                    address varchar(255),
-                    hours_per_week int,
-                    cur_status varchar(255),
-                    gpa float,
-                    pwd varchar(255),
-                    reg_date date,
-                    gender varchar(255)''')
+# cursor.execute('''CREATE TABLE users (track_id varchar(255) PRIMARY KEY,
+#                     full_name varchar(255),
+#                     age int,
+#                     phone varchar(255),
+#                     email varchar(255),
+#                     city varchar(255),
+#                     address varchar(255),
+#                     hours_per_week int,
+#                     cur_status varchar(255),
+#                     gpa float,
+#                     pwd varchar(255),
+#                     reg_date date,
+#                     gender varchar(255)''')
 
-cursor.execute('''CREATE TABLE admin (username varchar(255) PRIMARY KEY,
-                    password varchar(255)
-                    ''')
-un='Admin'
-pw='1234'
-query = f'''INSERT INTO admin (username,password)
-                            VALUES ('{un}','{pw}')'''
-cursor.execute(query)
-db.commit()
+# cursor.execute('''CREATE TABLE admin (username varchar(255) PRIMARY KEY,
+#                     password varchar(255)
+#                     ''')
+# un='Admin'
+# pw='1234'
+# query = f'''INSERT INTO admin (username,password)
+#                             VALUES ('{un}','{pw}')'''
+# cursor.execute(query)
+# db.commit()
 
 # to be commented end
 
